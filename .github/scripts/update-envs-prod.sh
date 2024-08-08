@@ -14,6 +14,6 @@ exclude_vars=(
 jq_filter=$(printf 'select(.key != "%s") | ' "${exclude_vars[@]}")
 jq_filter="${jq_filter::-3}"
 
-env_vars=$(echo "$SECRETS" | jq -r "to_entries | map($jq_filter) | map(\"\(.key)=\(.value)\") | join(\" \")")
+env_vars=$(echo "$SECRETS" | jq -r "to_entries | map($jq_filter) | map(\"\(.key)='\(.value)'\") | join(\" \")")
 
 az containerapp update -n ca-n8n-prod-eastus2-001 -g rg-startse-prod-eastus2 --set-env-vars $env_vars
